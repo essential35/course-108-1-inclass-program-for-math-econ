@@ -1,0 +1,324 @@
+---
+title: "1.1 ~ 1.7dictionary"
+output: html_document
+---
+
+```{r}
+library(reticulate)
+use_python("/Users/elisa/anaconda3/envs/m-team/bin/python",
+           required = T)
+use_condaenv("m-team", required = T)
+```
+
+# 基本元素
+1.atomic type：int，float，boolean（布林），string
+2.non-atomic type：
+
+  (i) list[]: 事後可改變內容(mutable)
+```{python}
+# list
+listA=[1,2,True]
+listA
+type(listA)
+listB=[1,["a","b"],True] # nested list
+listB
+type(listB)
+```
+
+  (ii) tuple(): 事後不可改變內容(immutable)
+```{python}
+# tuple
+tupleC=(1,["a","b"],True)
+type(tupleC)
+print(tupleC)
+u = tupleC,3,32,(4,2)
+print(u)
+```
+
+   (iii) set{}: 集合-先後位置不重要(mutable), Set elements as well as dictionary keys have to be hashable, but some unhashable datatypes:
+       list: use tuple instead
+       set: use frozenset instead
+       dict: has no official counterpart
+       
+         p.s. set 存不重複的值
+```{python}
+# set 內必須是hashable
+setD={1,"a",(1,4)}
+type(setD)
+print(setD)
+
+setE={True,False}
+print(setE)
+
+setF={1,"b",[1,4]}  
+# list is not hashable, so can not run in set, and will end to run
+
+setG={1,"b",(1,4,(5,8))}
+print(setG)
+setH={1,"b",(1,4,[5,8])}
+```
+```{python}
+listY=[1,1,3,0,1,0,2]
+list(set(listY))  # 使用set來刪除list中重覆的元素
+```
+```{python}
+# 轉換成 set
+
+set('python') # {'p', 'y', 't', 'h', 'o', 'n'}
+set(['python', 'js']) # {'python', 'js'}
+set(('python', 'js')) # {'python', 'js'}
+```
+```{python}
+# 使用 intersection 取交集，union 取聯集，difference 取差集
+
+languages1 = {'js', 'python', 'go'}
+languages2 = {'python', 'go', 'java'}
+languages1.intersection(languages2) # 交集 {'python', 'go'}
+languages1.union(languages2) # 聯集 {'js', 'python', 'java', 'go'}
+languages1.difference(languages2) # 差別 {'js'}
+```
+
+   (iv) dictionary : {key: value}成對定義的集合(set)
+```{python}
+# dict 
+# 元素當key
+languages = {
+    'name': 'python',
+    'version': '3.5'
+}
+
+dict([('name', 'python'), ('version', '3.5')])
+
+dict([("what","cool")])
+```
+```{python}
+# tuple 也可以當key
+sparseMatrix = {
+(0, 0): 3, 
+(0, 2): -2, 
+(0, 3): 11,
+(1, 1): 9, 
+(2, 1): 7, 
+(3, 3): -5}
+print(sparseMatrix)
+```
+
+ *補充：新增和取值，update 替代/更新，keys() 取得所有鍵、values() 取得所有值、items() 取得所有鍵值對，使用 in 判斷 key 是否存在 dict
+```{python}
+# 新增和取值
+languages = {}
+
+languages['name'] = 'python'
+
+print(languages['name']) # python
+```
+```{python}
+# 替代/更新
+languages = {
+    'name': 'python',
+    'version': '3.5'
+}
+
+languages2 = {
+    'name': 'js',
+    'version': '6'
+}
+
+languages.update(languages2)
+
+print(languages)
+```
+```{python}
+# keys() 取得所有鍵、values() 取得所有值、items() 取得所有鍵值對
+
+languages = {
+    'name': 'python',
+    'version': '3.5'
+}
+
+languages.keys() # ['name', 'version']
+languages.values() # ['python', '3.5']
+languages.items() # [('name', 'python'), ('version', '3.5')]
+
+```
+```{python}
+# 使用 in 判斷 key 是否存在 dict
+
+languages = {
+    'name': 'python',
+    'version': '3.5'
+}
+
+'name' in languages # True
+```
+
+3.packing：把分項元素組成一個list or tuple or others
+  unpacking：把一個list or tuple or sets 拆開，另外命名一個名字
+```{python}
+listA
+a,b,c=listA  # tuple unpacking to three objects；用a代表listA中的第一個“1”，以此類推
+type(a); type(b); type(c)  # ;可併行
+print(c)
+
+tupleD=(a,b,c)  # packing to a tuple
+type(tupleD)
+
+listD= [a,b,c] # packing to a list
+type(listD)
+```
+
+```{python}
+# *吸收剩餘無法對應的元素; 無*採一對一對應unpack。
+print(listA)
+
+a,*b = listA  # listA的第一項被命名為a，剩餘項被命名為b
+a; type(a)
+b; type(b)
+
+*a, b = listA
+a; type(a)
+b; type(b)
+```
+
+*補充：串列 (others: remove()、index()、count()、join()、sort()、copy())
+
+```{python}
+# append 接在原list等後面, 元素到串列最後
+languages = ['python', 'js', 'go']
+languages.append('java')
+print(languages)
+```
+
+```{python}
+# extend 串連串列
+languages = ['python', 'js', 'go']
+
+languages.extend('c++') # ['python', 'js', 'go', 'c++']
+print(languages)
+
+languages += ['ruby', 'c'] # ['python', 'js', 'go', 'c++', 'ruby', 'c']
+print(languages)
+
+```
+
+```{python}
+# insert 插入元素到位置上
+languages = ['python', 'js', 'go']
+languages.insert(0, 'java') # ['java', 'python', 'js', 'go'], 插入在第一項
+print(languages)
+```
+
+```{python}
+# del 刪除特定 index 值
+languages = ['python', 'js', 'go']
+
+del languages[-1] # ['python', 'js']
+print(languages)
+```
+
+```{python}
+# len() 元素長度
+len(['python', 'js', 'go']) # 3
+```
+
+```{python}
+# in 檢查元素是否在串列
+'java' in ['python', 'js', 'go'] # False
+```
+
+
+# 元素萃取
+1.取一個 e.g. listA[0]  取listA中的第一項
+
+2.規則多個元素: [start:end_before:step]
+```{python}
+listA=['A','B','C','D','E','F','G','H','I','J']
+listA
+listA[0:5:1]  # 從0取到5前面停下，每個值差1單位
+listA[0:5]
+listA[0:5:2]
+listA[:5] # 前面5個
+```
+```{python}
+listA
+listA[-2:5:-1]  
+# 從「倒數第2」index，切到5前結束，每一份相差-1單位, 即：-2,-3,-4,…,6；也就是「倒數第2，倒數第3，倒數第4，….，第6個」
+listA[-2:-6:-1]
+listA[-5:-1:1]
+listA[-5:] # 倒數後5個
+```
+
+3.不規則多個元素： list comprehension (<expression> for <var> in <iterable>)
+```{python}
+[listA[0],listA[2]]
+
+list(listA[index] for index in [0,2])  
+# index這個變數從[0,2]中取值帶入前面的listA[index]中
+
+[listA[index] for index in range(0,4,2)] 
+# range(0,2) 第一項～第二項
+# range(0,4,2) 第一項～第四項，取出來的每個值差2
+```
+```{python}
+# 取出它的第1，7，8元素
+listB=[2,5,-1,31,-22,3,17,25]
+[listB[index] for index in [0,6,7]]
+list(listB[index] for index in [0,6,7])
+```
+
+practice 1 : 
+有5個人的
+
+學號為172,214,322,425,517
+
+姓名為“小明”,“大雄”,“胖虎”,“小新”,“大白”
+
+成績為80,60,90,70,50
+
+創造名為grade的dictionary物件存這些資訊。
+
+取出成績的value
+
+使用dictionary comprehension創造一個dictionary物件，其key-value pair為姓名-成績。
+```{python}
+grade = {
+    (172,"小明"): 80,
+    (214,"大雄"): 60,
+    (322,"胖虎"): 90,
+    (425,"小新"): 70,
+    (517,"大白"): 50
+}
+
+#取出成績
+grade.values()
+{value for value in grade.values()}
+
+#key-value pair 為姓名-成績的dictionary
+{key[1]:value for key,value in grade.items()}
+```
+
+4.元素粹取: 用名稱
+```{python}
+sparseMatrix = {
+(0, 0): 3, 
+(0, 2): -2, 
+(0, 3): 11,
+(1, 1): 9, 
+(2, 1): 7, 
+(3, 3): -5}
+
+# 取(1,1)的值（only one value）
+sparseMatrix[(1,1)]
+```
+```{python}
+# 取多個values
+dictionaryA ={"name": "Mary", "id": "A28374", "grade": 77}
+{key: dictionaryA[key] for key in ['name','grade']} # dictionary comprehension
+```
+```{python}
+tupleA=(2,7,5)
+tupleA[0]
+tupleA[0]=3 # tuple無法改內容
+```
+
+
