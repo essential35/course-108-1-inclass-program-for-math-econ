@@ -1,0 +1,186 @@
+---
+title: "1.8 mutable vs immutable ~ 1.9 List Copy"
+output: html_document
+---
+
+```{r}
+library(reticulate)
+use_python("/Users/elisa/anaconda3/envs/m-team/bin/python",
+           required = T)
+use_condaenv("m-team", required = T)
+```
+
+# mutable vs immutable 
+
+list、set和dictionary 都是可改變的，比如list.append()，set.remove()，dict['key'] = value，是不可雜湊的；
+而tuple和string是不可變的，只可以做複製或者切片等操作，這就是可雜湊的。
+
+hashable 與 immutabele（不可變的） 類似，
+
+Python的所有不可變的內建物件都是可hashable的，但可變容器(如列表或字典)並非如此。
+
+```{python}
+# list mutable
+
+listA[0] = 32  # 把原listA中的第一項-1，變成32
+print(listA) 
+listB[1] = "c"  # 把原listA中的第二項-["a","b"]，變成"c"
+print(listB)
+```
+
+```{python}
+# tuple immutable
+
+tupleC[1] = ["c","d"]  # 無法改變tupleC中的第二項
+print(tupleC)
+```
+
+```{python}
+dictionaryA={
+"姓名": "小明",
+"年齡": 33
+}
+dictionaryA["姓名"]="小銘"
+dictionaryA
+```
+
+practice 2:
+將listA=[2,7,5,-2,13]：
+
+第1元素值改成0
+
+第2元素值改成tuple (“a”,“b”)
+```{python}
+listA=[2,7,5,-2,13]
+
+listA[0] = 0
+print(listA)
+
+listA[1] = ("a","b")
+print(listA)
+```
+
+```{python}
+setF = {1,2,3,["a","b"]} 
+# 因為list內的元素要unhashable（不可混雜的，類似mutable可變的），set內要hashable（可混雜的，類似immutable不可變的）
+```
+
+
+# List Copy
+```{python}
+originalList=[1,2,"a"]
+definitionCopy=originalList # 定義式複製
+
+sliceCopy=originalList[:] # slice複製
+sliceCopy2=originalList.copy()
+
+sliceCopy
+sliceCopy2
+definitionCopy
+```
+
+```{python}
+# 定義式複製 不管是改原始檔or複製檔，兩個都會變
+print(definitionCopy)
+print(originalList)
+
+definitionCopy[1]="b"
+print(definitionCopy)
+print(originalList)
+
+originalList[1]=2
+print(definitionCopy)
+print(originalList)
+```
+
+```{python}
+# slice複製 則不然
+originalList=[1,2,"a"]
+sliceCopy=originalList[:] # slice複製
+print(sliceCopy)
+print(originalList)
+
+sliceCopy[1]="b"
+print(sliceCopy)
+print(originalList)
+
+originalList[1]="f"
+print(sliceCopy)
+print(originalList)
+```
+
+```{python}
+# 經運算後的list 也不會一起改變
+originalList=[1,2,10]
+listA=originalList+[5,7] # concatenate
+listB=originalList*2 # *2 duplicate
+
+print(originalList)
+print(listA)
+print(listB)
+
+originalList[0]=0
+print(originalList)
+print(listA)
+print(listB)
+```
+
+
+# 元素儲存邏輯 (ignore 定義複製)
+1.only複製了root，樹幹、葉沒有被複製
+```{python}
+nestedList=[1,2,[3,4,[5,6]],[7,8]]
+# [1,2]為root，[3,4]&[7,8]為樹幹，[5,6]為[3,4]的葉 
+print(nestedList)
+copy1=nestedList[:]
+print(copy1)
+```
+
+```{python}
+# 更動根部位：不會產生連動
+nestedList[0]="d"
+print(nestedList)
+print(copy1)
+```
+
+```{python}
+nestedList=[1,2,[3,4,[5,6]],[7,8]]
+copy1=nestedList[:]
+print(nestedList)
+print(copy1)
+
+# 更動樹幹部位, both change
+nestedList[2][1]="d"
+print(nestedList)
+print(copy1)
+
+# 更動葉部位, both change
+nestedList[3][1]="leave"
+print(nestedList)
+print(copy1)
+```
+
+2.deep copy -> 完完全全的複製，include root, trunk, leaves
+
+p.s. deep copy 適合nested list；if not nested list，= list.copy() would be better
+```{python}
+original = [[0], 1]
+shallow = original[:]
+import copy
+deep = copy.deepcopy(original)
+
+print(original)
+print(shallow)
+print(deep)
+
+original[1]="2"
+print(original)
+print(shallow)
+print(deep)
+
+original[0][0]="2"
+print(original)
+print(shallow)
+print(deep)
+```
+
