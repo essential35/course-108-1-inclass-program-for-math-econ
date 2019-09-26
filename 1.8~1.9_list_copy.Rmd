@@ -162,7 +162,7 @@ print(copy1)
 
 2.deep copy -> 完完全全的複製，include root, trunk, leaves
 
-p.s. deep copy 適合nested list；if not nested list，= list.copy() would be better
+p.s. deep copy 適合nested list；if not nested list，= list.copy() would be
 ```{python}
 original = [[0], 1]
 shallow = original[:]
@@ -183,4 +183,6 @@ print(original)
 print(shallow)
 print(deep)
 ```
+
+
 
