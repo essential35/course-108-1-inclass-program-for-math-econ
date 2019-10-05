@@ -21,17 +21,19 @@ Python的所有不可變的內建物件都是可hashable的，但可變容器(�
 
 ```{python}
 # list mutable
-
+listA=['A','B','C','D','E','F','G','H','I','J']
 listA[0] = 32  # 把原listA中的第一項-1，變成32
 print(listA) 
+
+listB=[2,5,-1,31,-22,3,17,25]
 listB[1] = "c"  # 把原listA中的第二項-["a","b"]，變成"c"
 print(listB)
 ```
 
 ```{python}
 # tuple immutable
-
-tupleC[1] = ["c","d"]  # 無法改變tupleC中的第二項
+tupleC=(1,["a","b"],True)
+#tupleC[1] = ["c","d"]  # 無法改變tupleC中的第二項
 print(tupleC)
 ```
 
@@ -44,7 +46,7 @@ dictionaryA["姓名"]="小銘"
 dictionaryA
 ```
 
-practice 2:
+* practice 2:
 將listA=[2,7,5,-2,13]：
 
 第1元素值改成0
@@ -61,7 +63,7 @@ print(listA)
 ```
 
 ```{python}
-setF = {1,2,3,["a","b"]} 
+#setF = {1,2,3,["a","b"]} 
 # 因為list內的元素要unhashable（不可混雜的，類似mutable可變的），set內要hashable（可混雜的，類似immutable不可變的）
 ```
 
@@ -127,7 +129,7 @@ print(listB)
 
 
 # 元素儲存邏輯 (ignore 定義複製)
-1.only複製了root，樹幹、葉沒有被複製
+1. only複製了root，樹幹、葉沒有被複製
 ```{python}
 nestedList=[1,2,[3,4,[5,6]],[7,8]]
 # [1,2]為root，[3,4]&[7,8]為樹幹，[5,6]為[3,4]的葉 
@@ -160,7 +162,7 @@ print(nestedList)
 print(copy1)
 ```
 
-2.deep copy -> 完完全全的複製，include root, trunk, leaves
+2. deep copy -> 完完全全的複製，include root, trunk, leaves
 
 p.s. deep copy 適合nested list；if not nested list，= list.copy() would be
 ```{python}
