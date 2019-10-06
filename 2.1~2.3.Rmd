@@ -1,0 +1,289 @@
+---
+title: "2.1~2.3"
+output: html_document
+---
+
+```{r}
+library(reticulate)
+use_python("/Users/elisa/anaconda3/envs/m-team/bin/python",
+           required = T)
+use_condaenv("m-team", required = T)
+```
+
+
+
+```{python}
+listB=["A","B","C"]
+listC=[1.,2.,3.]
+listB+listC
+listB*3  # repeat 3 times
+```
+
+##  relational operator
+```{python}
+5 in [[1],[5],[3]]
+[5] in [[1],[5],[3]]
+```
+
+```{python}
+x = set([1, 2, 3, 1, 3, 5]) 
+x
+# {1, 2, 3, 5}  
+3 in x
+```
+
+```{python}
+[i for i in "abc"]
+[i for i in {"A": 25, "B": 1, "C": 44}]  # 取出keys
+[i for i in [0,5,8]]
+```
+
+## String Method
+
+1. 常見的method
+```{python}
+x="i am steven."
+x.capitalize() # 開頭大寫
+x.center(20) # 20個字元長度，描述放中間
+x.upper() # 全大寫
+x.lower() # 全小寫
+x.find("steven") # steven開始的位置
+```
+
+2. 切割字串
+```{python}
+x1,x2,x3=x.split() # 以空格切
+print(x1)
+print(x2)
+print(x3)
+
+y="王小明,45歲,血型:A"
+y1,y2,y3=y.split(",") # 以,切
+print(y1); print(y2); print(y3)
+
+print(y.split(",",1)) # 只切（前面數來）第一刀
+print(y.split(",",2)) # 只切（前面數來）二刀
+```
+
+3. 合併字串
+```{python}
+" ".join(["用", "空格", "把", "字", "連起來"])
+```
+
+```{python}
+"大"+"家"+"好"
+''.join(["大","家","好"])
+```
+
+4. 字元替換
+```{python}
+" 你好嗎？ ".strip("嗎？ ")
+" 你好嗎？ ".replace("嗎？","!")
+```
+
+5. 格式替換
+```{python}
+"{0}的{1}成績是{2}".format("小明", "經原", 50)  
+"{}的{}成績是{}".format("小明", "經原", 50) 
+"{1}的{0}成績是{2}".format("經原","小明", 50)   
+
+
+"{name}的{subject}成績是{grade}".format(
+  name="小明",grade=50,subject="經原") 
+```
+
+6. others
+```{python}
+x="上海"
+xlist=list(x)
+xlist.reverse()
+print(xlist)
+"".join(xlist)
+```
+
+```{python}
+greeting="Hellow zorld"
+iWrong=greeting.find('z')
+greeting=list(greeting)
+greeting[iWrong]="w"
+"".join(greeting)
+```
+
+
+## list method
+1. 新增一筆
+```{python}
+list0=["a","b","c"]
+list0Copy=list0.copy()
+
+# 使用method
+list0.append("d") # list0裡新增一筆
+list0
+
+# 使用operation
+list0Copy+["d"] 
+list0Copy
+```
+
+2. 延伸list
+```{python}
+listA=["小明",["微積分",70],["會計學",81]]
+listB=["花花",["微積分",90],["會計學",61]]
+listBCopy=listB.copy()
+
+listB
+listB.extend(listA)
+len(listB)
+print(listB)
+```
+
+3. 插入
+```{python}
+x = [1, 2, 3]
+x.insert(2, "hello")  # 數字代表空格的位置
+print(x)
+# [1, 2, 'hello', 3]
+x.insert(0, "start")
+print(x)
+# ['start', 1, 2, 'hello', 3]
+x.insert(-1,"hi")
+print(x)
+```
+
+4. 刪除
+```{python}
+x
+
+del x[2:4] #刪除數個元素
+print(x)
+
+del x #刪除整個物件
+print(x)
+```
+
+```{python}
+y="hello"
+y[1:3]
+#del y ,無法 del y[1:3]
+# so need 轉成string list 的形式在刪除
+y1 = list(y)
+del y1[1:3]
+''.join(y1)
+```
+
+5. 移除符合條件的元素
+```{python}
+y=[1,2,3,5,3,4]
+print(y)
+y.remove(3)  # remove 第一個元素
+print(y)
+```
+
+6. 排序
+```{python}
+z = [[3, 5], [2, 9], [2, 3], [4, 1], [3, 2]]
+len(z)
+print(z)
+
+z.sort() # lexicographic sorting
+print(z)
+
+z.sort(key=sum) # based on sum function
+print(z)
+
+z.reverse()
+print(z)  # based on sum function （大到小） 
+```
+
+7. 找元素
+```{python}
+listA=["Helen", "Alex", "John", "Mark","Alex"]
+listA.index("Alex") # 只找第一個出現的
+[i for i in range(len(listA)) if listA[i] == "Alex" ]  # 找出所有符合的
+```
+
+8. 重複次數
+```{python}
+listB=[1,2,3,3,3,3,4,7]
+listB.count(2)
+listB.count(3)
+```
+
+
+## tuple method
+```{python}
+# 一個元素的tuple要放一個逗號，否則會視為atomic type。
+tupleA=(1,3,2,3)
+
+list1=[2]
+set1={2}
+tuple1Wrong=(2)
+tupleA=(2,)
+
+list1; set1; 
+tuple1Wrong
+tupleA
+```
+
+
+## set method
+```{python}
+x = set([1, 2, 3, 1, 3, 5]) 
+x
+# {1, 2, 3, 5}  
+```
+
+1. 增加成員: add/update
+```{python}
+# 增加集合成員
+x
+x.add(6)    # 加一個
+x
+
+x.update({7,8}) # 加多個
+x
+```
+
+2. 移除成員: remove, difference, difference_update
+```{python}
+# 移除成員
+x
+x.remove(5) # 移一個
+x
+
+x.difference({7,8,10}) # 移多個，x - {7,8,10}
+x # 並沒有更動
+
+x.difference_update({7,8,10})
+x
+```
+
+## dictionary
+1. 增加元素
+```{python}
+dictionaryA={
+  "日期": [2001,2002,2003],
+  "金額": [21000,33000,45880]}
+dictionaryA
+
+dictionaryA["數量"]=[100,200,300]
+dictionaryA
+```
+
+```{python}
+dictionaryA.get("日期")
+dictionaryA.get("品項")
+dictionaryA.get("品項","無此key")
+```
+
+找出dict_finStatement中’營業利益（損失）‘為負的’公司名稱’
+```{python}
+import pandas as pd
+
+finStatement=pd.read_csv("http://mopsfin.twse.com.tw/opendata/t187ap06_O_ci.csv")
+dict_finStatement=finStatement.to_dict()
+```
+```{python}
+[dict_finStatement['公司名稱'][index] for index in range(len(dict_finStatement['公司名稱'])) if dict_finStatement.get('營業利益（損失）')[index] < 0]
+```
+
