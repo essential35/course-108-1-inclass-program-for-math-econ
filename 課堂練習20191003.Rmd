@@ -10,7 +10,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 
 library(reticulate)
-use_python("/Users/anthonywwetterer/anaconda3/envs/m-team/bin/python",
+use_python("/Users/elisa/anaconda3/envs/m-team/bin/python",
            required = T)
 use_condaenv("m-team", required = T)
 ```
@@ -120,7 +120,7 @@ lossFirmKeys=[index for index in range(len(profit)) if profit[index]<0]
 
 2. 由index進去公司找出名稱
 ```{python}
-index=lossFirmKeys[100]
+index=lossFirmKeys[100] # 第100個
 dict_finStatement.get('公司名稱')[index]
 dict_finStatement.get('公司名稱').get(index)
 
@@ -272,7 +272,6 @@ parameters={
 "beta": 0.5
 }
 ```
-
 
 
 ```{python}
